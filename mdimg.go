@@ -9,15 +9,20 @@ import (
 	"os"
 	"strings"
 
+	"github.com/f1bonacc1/glippy"
 	"github.com/google/uuid"
 )
 
 func main() {
-	url := flag.String("u", "", "url of image to insert")
+	u := flag.String("u", "", "url of image to insert")
+	clipboard := flag.Bool("c", false, "retrieve url from clipboard")
 	out := flag.String("o", "", "output file")
 
 	flag.CommandLine.Parse(os.Args[1:])
-	tag, err := CreateImageTag(*url, *out, uuid.NewString)
+
+	url, err := GetUrl(*u, *clipboard)
+
+	tag, err := CreateImageTag(url, *out, uuid.NewString)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
@@ -25,9 +30,26 @@ func main() {
 	fmt.Print(tag)
 }
 
+func GetUrl(url string, clipboard bool) (string, error) {
+	if url != "" {
+		return url, nil
+	} else if url == "" && !clipboard {
+		return "", errors.New("Requires -u or -c option")
+	} else {
+		clipUrl, err := glippy.Get()
+		if err != nil {
+			return "", errors.New("Could not read url from clipboard")
+		}
+		if clipUrl == "" {
+			return "", errors.New("Clipboard is empty")
+		}
+		return clipUrl, nil
+	}
+}
+
 func CreateImageTag(url string, out string, uuid func() string) (string, error) {
 	if url == "" {
-		return "", errors.New("Requires -u option")
+		return "", errors.New("url must not be empty")
 	}
 
 	err := createDirectories(out)

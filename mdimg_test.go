@@ -7,6 +7,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/f1bonacc1/glippy"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -57,5 +58,24 @@ func TestUrlDownload(t *testing.T) {
 
 func TestMissingUrlOption(t *testing.T) {
 	_, err := CreateImageTag("", "", func() string { return "generated-name" })
-	assert.Equal(t, "Requires -u option", err.Error())
+	assert.Equal(t, "url must not be empty", err.Error())
+}
+
+func TestUrlWithClipboardOptions(t *testing.T) {
+	url, err := GetUrl("", false)
+	assert.Equal(t, "Requires -u or -c option", err.Error())
+
+	url, err = GetUrl("url", false)
+	assert.Nil(t, err)
+	assert.Equal(t, "url", url)
+
+	glippy.Set("")
+	url, err = GetUrl("", true)
+	assert.Equal(t, "", url)
+	assert.Equal(t, "Clipboard is empty", err.Error())
+
+	glippy.Set("clipboard")
+	url, err = GetUrl("", true)
+	assert.Nil(t, err)
+	assert.Equal(t, "clipboard", url)
 }
