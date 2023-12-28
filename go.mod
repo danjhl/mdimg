@@ -6,7 +6,9 @@ require github.com/stretchr/testify v1.8.4
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/f1bonacc1/glippy v0.0.0-20230614190937-e7ca07f99f6f // indirect
 	github.com/google/uuid v1.5.0 // indirect
+	github.com/jezek/xgb v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.design/x/clipboard v0.7.0 // indirect
 	golang.org/x/exp v0.0.0-20190731235908-ec7cb31e5a56 // indirect
