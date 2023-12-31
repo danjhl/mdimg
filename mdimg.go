@@ -10,9 +10,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/f1bonacc1/glippy"
+	clipboard "github.com/atotto/clipboard"
 	"github.com/google/uuid"
-	"github.com/skanehira/clipboard-image/v2"
+	iclipboard "github.com/skanehira/clipboard-image/v2"
 )
 
 func main() {
@@ -52,7 +52,7 @@ func CreateImageTag(u string, o string, i bool, c bool, uuid func() string) (str
 }
 
 func CreateImageTagFromRaw(out string, uuid func() string) (string, error) {
-	reader, err := clipboard.Read()
+	reader, err := iclipboard.Read()
 	if err != nil {
 		return "", errors.New("Could not get image copy from clipboard, make sure you have copied an image")
 	}
@@ -84,13 +84,13 @@ func CreateImageTagFromRaw(out string, uuid func() string) (string, error) {
 	return fmt.Sprintf("![%s](%s)", fileName, fileName), nil
 }
 
-func GetUrl(url string, clipboard bool) (string, error) {
+func GetUrl(url string, c bool) (string, error) {
 	if url != "" {
 		return url, nil
-	} else if url == "" && !clipboard {
+	} else if url == "" && !c {
 		return "", errors.New("Requires -u or -c option")
 	} else {
-		clipUrl, err := glippy.Get()
+		clipUrl, err := clipboard.ReadAll()
 		if err != nil {
 			return "", errors.New("Could not read url from clipboard")
 		}
