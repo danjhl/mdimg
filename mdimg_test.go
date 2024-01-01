@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"testing"
 
-	"github.com/f1bonacc1/glippy"
+	"github.com/atotto/clipboard"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -90,7 +90,7 @@ func TestClipboardOption(t *testing.T) {
 	defer server.Close()
 	defer os.RemoveAll("./img")
 
-	glippy.Set(server.URL)
+	clipboard.WriteAll(server.URL)
 	tag, err := CreateImageTag("", "", false, true, func() string { return "generated" })
 
 	assert.Nil(t, err)
@@ -99,7 +99,7 @@ func TestClipboardOption(t *testing.T) {
 }
 
 func TestClipboardOptionWithEmptyClipboard(t *testing.T) {
-	glippy.Set("")
+	clipboard.WriteAll("")
 	tag, err := CreateImageTag("", "", false, true, func() string { return "generated" })
 
 	assert.Equal(t, "Clipboard is empty", err.Error())

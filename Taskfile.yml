@@ -1,0 +1,7 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  test:
+    - "xvfb-run -a go test"
