@@ -1,4 +1,4 @@
-name: Build and Release
+name: Release
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
       - name: Test
         env:
           DISPLAY: ":99.0"
-        run: xvfb-run -a go testn
+        run: xvfb-run -a go test
 
       - name: Create checksum
         run: sha256sum mdimg | awk '{ print $1 }' > mdimg.sha256 
