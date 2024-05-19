@@ -7,7 +7,7 @@ on:
 
 jobs:
 
-  build:
+  release-linux:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,6 +26,7 @@ jobs:
           GOOS: "linux"
           GOARCH: "amd64"
         run: go build
+        run: mv mdimg mdimg-linux-x64
 
       - name: Test
         env:
@@ -33,13 +34,24 @@ jobs:
         run: xvfb-run -a go test
 
       - name: Create checksum
-        run: sha256sum mdimg | awk '{ print $1 }' > mdimg.sha256 
+        run: sha256sum mdimg-linux-x64 | awk '{ print $1 }' > mdimg-linux-x64.sha256 
 
-      - name: Upload linux build
-        uses: actions/upload-artifact@v4
-        with:
-          name: mdimg-linux-x64
-          path: |
-            mdimg
-            mdimg.sha256
+      # - name: Upload linux build
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: mdimg-linux-x64
+      #     path: |
+      #       mdimg-linux-x64
+      #       mdimg-linux-x64.sha256
+
+      - name: Release to github
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          TAG: ${{ github.ref_name }}
+        run: >
+          gh release create $TAG mdimg-linux-x64 mdimg-linux-x64.sha256
+          --verify-tag
+          --repo $REPO
 
