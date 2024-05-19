@@ -26,6 +26,8 @@ jobs:
           GOOS: "linux"
           GOARCH: "amd64"
         run: go build
+
+      - name: Rename binary
         run: mv mdimg mdimg-linux-x64
 
       - name: Test
