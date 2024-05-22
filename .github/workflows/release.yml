@@ -50,10 +50,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
+          REPO: ${{ github.event.repository }}
           TAG: ${{ github.ref_name }}
         run: >
           gh release create $TAG mdimg-linux-x64 mdimg-linux-x64.sha256
           --verify-tag
           --repo $REPO
-
