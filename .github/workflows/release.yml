@@ -51,4 +51,4 @@ jobs:
           gh release create $TAG mdimg-linux-x64 mdimg-linux-x64.sha256
           --verify-tag
           --repo $OWNER/$REPO
-          --title mdimg $TAG
+          --title "mdimg $TAG"
