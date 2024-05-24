@@ -41,14 +41,6 @@ jobs:
       - name: Create checksum
         run: sha256sum mdimg-linux-x64 | awk '{ print $1 }' > mdimg-linux-x64.sha256 
 
-      # - name: Upload linux build
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: mdimg-linux-x64
-      #     path: |
-      #       mdimg-linux-x64
-      #       mdimg-linux-x64.sha256
-
       - name: Release to github
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -59,3 +51,4 @@ jobs:
           gh release create $TAG mdimg-linux-x64 mdimg-linux-x64.sha256
           --verify-tag
           --repo $OWNER/$REPO
+          --title mdimg $TAG
