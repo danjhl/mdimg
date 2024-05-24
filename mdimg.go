@@ -21,7 +21,12 @@ func main() {
 	o := flag.String("o", "", "output file")
 	i := flag.Bool("i", false, "save image from clipboard")
 
-	flag.CommandLine.Parse(os.Args[1:])
+	args := os.Args[1:]
+	if len(args) < 1 {
+		flag.PrintDefaults()
+		return
+	}
+	flag.CommandLine.Parse(args)
 
 	tag, err := CreateImageTag(*u, *o, *i, *c, uuid.NewString)
 
